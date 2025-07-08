@@ -2,6 +2,8 @@ import "https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js";
 
 const merida = [-89.62, 20.97]; // Coordinates for Merida
 
+const apiUrl = window.env?.API_URL || "http://localhost:3000";
+
 const limites = [
   [-89.820316, 20.846415], // Coordenadas sureste
   [-89.453107, 21.173615] // Coordenadas noreste  
@@ -40,7 +42,7 @@ async function init() {
     // Load GeoJSON route layer from your backend
     map.addSource("rutas", {
       type: "geojson",
-      data: "http://localhost:3000/rutas"
+      data: `${apiUrl}`
     });
 
     map.addLayer({

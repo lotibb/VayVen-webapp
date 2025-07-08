@@ -1,17 +1,19 @@
+require("dotenv").config(); // Load environment variables
+
 const express = require("express");
 const { Pool } = require("pg");
 const cors = require("cors");
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
-// PostgreSQL connection
+// PostgreSQL connection using env variables
 const pool = new Pool({
-  user: "postgres",
-  host: "localhost",
-  database: "merida_geospatial_db",
-  password: "tuHero51?",
-  port: 5432,
+  user: process.env.PGUSER,
+  host: process.env.PGHOST,
+  database: process.env.PGDATABASE,
+  password: process.env.PGPASSWORD,
+  port: process.env.PGPORT,
 });
 
 // Enable CORS for frontend access

@@ -1,8 +1,7 @@
 {
-  "name": "vanilla-example",
+  "name": "backend",
   "version": "1.0.0",
-  "description": "> Built with script type=\"module\", so requires an http server",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
@@ -10,9 +9,10 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "description": "",
   "dependencies": {
     "cors": "^2.8.5",
-    "dotenv": "^17.0.1",
+    "dotenv": "^17.1.0",
     "express": "^5.1.0",
     "pg": "^8.16.3"
   }
