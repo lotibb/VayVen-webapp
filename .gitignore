@@ -7,3 +7,5 @@
 /qgis_geolocalizaciones/
 
 .env
+
+/vanilla-example/backend/node_modules
