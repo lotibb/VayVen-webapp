@@ -2,7 +2,7 @@ require("dotenv").config(); // Load environment variables
 
 const express = require("express");
 const { Pool } = require("pg");
-const cors = require("cors");
+const cors = require("cors"); 
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -16,8 +16,7 @@ const pool = new Pool({
   port: process.env.PGPORT,
 });
 
-// Enable CORS for frontend access
-app.use(cors());
+app.use(express.static("public"));
 
 /**
  * GET /rutas

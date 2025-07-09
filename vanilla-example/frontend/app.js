@@ -40,10 +40,31 @@ async function init() {
 
   map.on("load", async () => {
     // Load GeoJSON route layer from your backend
-    map.addSource("rutas", {
-      type: "geojson",
-      data: `${apiUrl}`
-    });
+    
+    try {
+      const response = await fetch(`${apiUrl}/rutas`);
+      const geojson = await response.json();
+
+      console.log("Fetched GeoJSON:", geojson);
+
+      map.addSource("rutas", {
+        type: "geojson",
+        data: geojson
+      });
+
+      map.addLayer({
+        id: "rutas-lineas",
+        type: "line",
+        source: "rutas",
+        paint: {
+          "line-color": ["get", "color"],
+          "line-width": 4
+        }
+      });
+    } catch (err) {
+      console.error("Failed to load /rutas data:", err);
+    }
+
 
     map.addLayer({
       id: "rutas-lineas",
