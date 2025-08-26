@@ -1,11 +1,4 @@
- 
-
-/mexico_maptiles_OSM/
-
-/openfreemap-examples-main/
-
-/qgis_geolocalizaciones/
 
 .env
 
-/vanilla-example/backend/node_modules
+/icons/
