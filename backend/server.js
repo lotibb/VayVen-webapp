@@ -1,5 +1,6 @@
 require("dotenv").config(); // Load environment variables
 
+const path = require("path")
 const express = require("express");
 const { Pool } = require("pg");
 const cors = require("cors"); 
@@ -9,21 +10,21 @@ const port = process.env.PORT || 3000;
 
 // PostgreSQL connection using env variables
 
-/*const pool = new Pool({
+const pool = new Pool({
   user: process.env.PGUSER,
   host: process.env.PGHOST,
   database: process.env.PGDATABASE,
   password: process.env.PGPASSWORD,
   port: process.env.PGPORT,
-}); */
+});
 
-const pool = new Pool({
+/* const pool = new Pool({
   user: "postgres",
   host: "localhost",
   database: "merida_geospatial_db",
   password: "tuHero51?",
   port: 5432,
-});
+}); */
 
 // Test PostgreSQL connection on startup
 pool.connect()
@@ -37,7 +38,9 @@ pool.connect()
   });
 
 app.use(cors())
-app.use(express.static("public"));
+
+// 🔸 Serve your real folders:
+app.use(express.static(path.join(__dirname, "public")));
 
 /**
  * GET /rutas
@@ -96,13 +99,41 @@ app.get("/rutas", async (req, res) => {
           activo: row.activo,
           color: row.color
         }
+
       }))
     };
+
+    const tiendasResult = await pool.query(`
+      SELECT 
+        id_denue,
+        nom_estab,
+        raz_social,
+        nom_tienda,
+        fecha_alta,
+        ST_AsGeoJSON(geom)::json AS geometry
+      FROM tiendas
+    `);
+
+    const tiendasGeoJSON = {
+      type: "FeatureCollection",
+      features: tiendasResult.rows.map(row => ({
+        type: "Feature",
+        geometry: row.geometry,
+        properties: {
+          id_denue: row.id_denue,
+          nom_estab: row.nom_estab,
+          raz_social: row.raz_social,
+          nom_tienda: row.nom_tienda,
+          fecha_alta: row.fecha_alta
+        }
+      }))
+    };  
 
     // Send both as one JSON response
     res.json({
       rutas: rutasGeoJSON,
-      paradas: paradasGeoJSON
+      paradas: paradasGeoJSON,
+      tiendas: tiendasGeoJSON
     });
 
   } catch (error) {
